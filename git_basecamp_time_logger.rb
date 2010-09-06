@@ -130,6 +130,7 @@ private
     result = request(:put, "todo_items/#{@current_task_id}/complete")
     if result.is_a?(Net::HTTPOK)
       log :confirm, 'Task marked as completed!'
+      %x(git config --unset-all #{GIT_LOCAL_CONFIG_CURRENT_TASK_ID_KEY})
     else
       errors = result.body.scan(%r(<error>(.*?)</error>)).flatten
       if errors.empty?
