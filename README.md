@@ -210,7 +210,7 @@ Caveats
 There are a few caveats you should keep in mind:
 
 * This script is intended for _post-commit_ hooks.  Which means your commit will already have happened by the time the script kicks in, so failure to log time to Basecamp doesn't mean your commit didn't get in.  If you have time-logging issues of any sort, remember your commit already went through, so you'll need to _amend_ it, not to create a new one.
-* **Amending commits does not cancel you previous time logging.**  So you'll just be logging double-time.  Watch out for this!  You'll need to update your Basecamp-logging tag to reflect the time you spent amending the commit.
+* **Amending commits does not cancel your previous time logging.**  So you'll just be logging double-time.  Watch out for this!  You'll need to update your Basecamp-logging tag to reflect the time you spent amending the commit.
 * Conversely, because the script scripts your Basecamp tag from the commit message (at least by default), amending with automatic reuse of the previous message (`git commit --amend -C HEAD`, you know?) (what, you don't?) (tsk…) will not log any additional time (which is better than too much time, I guess).
 * Task specifications only accept alphanumeric characters and whitespace.  Using other characters will invalidate your tag and therefore ignore Basecamp logging entirely.
 
@@ -223,42 +223,21 @@ The configuration _per se_ lies in Git configuration, some of it global (that is
 
 The Git configuration keys are as follows:
 
-<table>
-  <thead>
-    <tr>
-      <th>Key</th>
-      <th>(Intended) scope</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>`basecamp.endpoint`</th>
-      <td>Global</td>
-      <td>The URL of your Basecamp account; use the proper protocol (`http://`) or (`https://`), depending on your settings.  Using the wrong protocol will break the script!</td>
-    </tr>
-    <tr>
-      <th>`basecamp.api-token`</th>
-      <td>Global</td>
-      <td>Your personal API token, accessible at the bottom of your _My Info_ page.</td>
-    </tr>
-    <tr>
-      <th>`basecamp.person-id`</th>
-      <td>Global</td>
-      <td>Your own Basecamp person ID; you don't need to set this explicitly as the script will grab and cache it locally the first time you use it.</td>
-    </tr>
-    <tr>
-      <th>`basecamp.project-id`</th>
-      <td>Local</td>
-      <td>The Basecamp project ID for the project your repository is about.  You can get it from your project URLs; for instance, your project’s dashboard URL should look something like `https://your.basecamp.url/projects/PROJECT-ID/log`.</td>
-    </tr>
-    <tr>
-      <th>`basecamp.current-task-id`</th>
-      <td>Local</td>
-      <td>The task you’re currently working on, when logging in task mode (using the `:T` marker in your Basecamp tag at the end of your commit message).  You should seldom need this, and don't forget to clear it once you're done with this task!</td>
-    </tr>
-  </tbody>
-</table>
+* `basecamp.endpoint`
+  * Global
+  * The URL of your Basecamp account; use the proper protocol (`http://`) or (`https://`), depending on your settings.  Using the wrong protocol will break the script!
+* `basecamp.api-token`
+  * Global
+  * Your personal API token, accessible at the bottom of your _My Info_ page.
+* `basecamp.person-id`
+  * Global
+  * Your own Basecamp person ID; you don't need to set this explicitly as the script will grab and cache it locally the first time you use it.
+* `basecamp.project-id`
+  * Local
+  * The Basecamp project ID for the project your repository is about.  You can get it from your project URLs; for instance, your project’s dashboard URL should look something like `https://your.basecamp.url/projects/PROJECT-ID/log`.
+* `basecamp.current-task-id`
+  * Local
+  * The task you’re currently working on, when logging in task mode (using the `:T` marker in your Basecamp tag at the end of your commit message).  You should seldom need this, and don't forget to clear it once you're done with this task!
 
 You can also adjust two bits of script behavior by tweaking two constants in the source code itself (around the top of the `GitBasecampTimerLogger` class):
 
