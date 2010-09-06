@@ -33,10 +33,8 @@ So you need Ruby installed and available.  I went to great pains not to require 
 
 If you're on a Linux, UNIX or OS X box, you most likely have a recent-enough version of Ruby installed already.  Just check by typing the following in a command line:
 
-{{{
-$ ruby -v
-ruby 1.8.7 (2009-06-12 patchlevel 174) [universal-darwin10.0]
-}}}
+	$ ruby -v
+	ruby 1.8.7 (2009-06-12 patchlevel 174) [universal-darwin10.0]
 
 Any Ruby from 1.8.6 on is fine.  If you don't have it installed (what kind of system is that?!), [head over here](http://www.ruby-lang.org/en/downloads/) and install it; it's pretty fast and painless.
 
@@ -249,25 +247,25 @@ Licence
 
 This is licenced under the MIT licence, listed below and at the top of the script.  The executive summary goes: do whatever you want with it, except strip the copyright or licence info from it.
 
-	# Copyright (c) 2010 Christophe Porteneuve <tdd@git-attitude.fr>
-	#
-	# Permission is hereby granted, free of charge, to any person obtaining a copy
-	# of this software and associated documentation files (the "Software"), to deal
-	# in the Software without restriction, including without limitation the rights
-	# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	# copies of the Software, and to permit persons to whom the Software is
-	# furnished to do so, subject to the following conditions:
-	#
-	# The above copyright notice and this permission notice shall be included in
-	# all copies or substantial portions of the Software.
-	#
-	# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	# THE SOFTWARE.
+	Copyright (c) 2010 Christophe Porteneuve <tdd@git-attitude.fr>
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in
+	all copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+	THE SOFTWARE.
 
 Contributing
 ------------
