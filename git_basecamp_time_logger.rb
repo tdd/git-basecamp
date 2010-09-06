@@ -99,8 +99,10 @@ private
   ABORT_MESSAGES = {
     :default =>
       ["Some error occurred, sorry!", 42],
+    :too_many_tasks =>
+      ['Specify a task.', 6],
     :cant_pick_task =>
-      ['Cannot have you pick the task as keyboard access seems to b0rk (are you on a BSD/OSX system?) -- specify the task ID.', 6],
+      ['Can’t detect a single task matching your task specification.', 7],
     :cannot_use_delta =>
       ["Can’t compute a time delta: no previous commit!", 5],
     :invalid_api_token =>
@@ -215,15 +217,15 @@ private
 
   def parse_latest_log
     @sha, @stamp, @msg = git_log_one('%h %ct %s').split(' ', 3).map(&:strip)
-    exit 0 unless @msg[/\[BC(:T[\w\s]*X?)?(?::(-?\d+[hm]?))?\]$/i]
+    exit 0 unless @msg[/\[BC(:T[\w\s]*=?)?(?::(-?\d+[hm]?))?\]$/i]
     @stamp = @stamp.to_i
     # Handle task segment, if any
     task_info, offset_or_duration = $1, $2.to_s
     @current_task_id = task_info.to_s[/(\d+)/] && $1
-    if task_unknown? && task_info.to_s[/^:T(.*)X?$/i]
+    if task_unknown? && task_info.to_s[/^:T([\w\s]*)=?$/i]
       @task_filter = $1.strip.split(/\s+/).map { |t| Regexp.new(Regexp.escape(t), Regexp::IGNORECASE) }
     end
-    @complete_task = !!task_info[/X$/i]
+    @complete_task = !!(task_info.to_s[/\=$/i])
     @task_mode = !!task_info
     # Tweak message
     @msg = @msg.sub(/\[.*?\]$/, '')
@@ -249,14 +251,16 @@ private
         suffix = prefix && "\033[1;#{TTY_COLORS[:error]}m" || nil
         log :error, " - #{prefix}%10d#{suffix} = %s\n", task_id, task_desc
       end
-      abort :cant_pick_task
-    else
+      abort :too_many_tasks
+    elsif tasks.size == 1
       @current_task_id = tasks[0][0]
       matched_name = tasks[0][1]
       if @tty
         @task_filter && @task_filter.each { |f| matched_name.gsub!(f, "\033[1;#{TTY_COLORS[:match]}m\\&\033[0;37m") }
       end
       log :info, "-> Auto-detected single matching task: #{matched_name} (##{@current_task_id})"
+    else
+      abort :cant_pick_task
     end
   end
   
@@ -291,18 +295,17 @@ private
   def setup
     @tty = STDOUT.tty?
     parse_latest_log
-    @api_endpoint = %x(git config --global --get #{GIT_GLOBAL_CONFIG_API_ENDPOINT_KEY}).strip
+    @api_endpoint = %x(git config --get #{GIT_GLOBAL_CONFIG_API_ENDPOINT_KEY}).strip
     abort :missing_api_endpoint if @api_endpoint.blank?
-    @api_token = %x(git config --global --get #{GIT_GLOBAL_CONFIG_API_TOKEN_KEY}).strip
+    @api_token = %x(git config --get #{GIT_GLOBAL_CONFIG_API_TOKEN_KEY}).strip
     abort :missing_api_token if @api_token.blank?
-    @person_id = %x(git config --global --get #{GIT_GLOBAL_CONFIG_PERSON_ID_KEY}).strip if OPT_CACHE_PERSON_ID
+    @person_id = %x(git config --get #{GIT_GLOBAL_CONFIG_PERSON_ID_KEY}).strip if OPT_CACHE_PERSON_ID
     @person_id = get('me', 'id') if @person_id.blank?
     abort :invalid_api_token if @person_id.blank?
     %x(git config --global --replace-all #{GIT_GLOBAL_CONFIG_PERSON_ID_KEY} #{@person_id}) if OPT_CACHE_PERSON_ID
     @project_id = %x(git config --get #{GIT_LOCAL_CONFIG_PROJECT_ID_KEY}).strip
     abort :missing_project_id if @project_id.blank?
     @current_task_id = %x(git config --get #{GIT_LOCAL_CONFIG_CURRENT_TASK_ID_KEY}).strip if @current_task_id.blank?
-    @task_mode ||= @current_task_id.present?
   end
   
   def task_mode?
